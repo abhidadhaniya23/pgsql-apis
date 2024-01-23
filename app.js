@@ -1,7 +1,6 @@
 // app.js
 import express from 'express'
 import morgan from 'morgan'
-import pool from './src/config/db.js'
 import { configDotenv } from 'dotenv'
 import appRouter from './src/routes/app.routes.js'
 configDotenv()
@@ -14,11 +13,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(express.json())
 
-// app.get('/', async (req, res) => {
-//   // const result = pool.query('select * from orders')
-//   // console.log((await result).rows)
-//   res.send('API is running...!')
-// })
+app.get('/', async (req, res) => {
+  res.send('API is running...!')
+})
 
 // Routes
 app.use('/api', appRouter)

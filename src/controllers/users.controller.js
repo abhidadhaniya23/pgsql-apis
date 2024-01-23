@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
-import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator'
 import { getUserByEmail, getUserById, insertUser } from '../services/users.service.js'
 import { generateToken } from '../utils/jwtTokens.js'
