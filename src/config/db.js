@@ -1,6 +1,8 @@
-import pgPool from 'pg'
-const { Pool } = pgPool
 import { configDotenv } from 'dotenv'
+import pgPool from 'pg'
+
+const { Pool } = pgPool
+
 configDotenv()
 
 const pool = new Pool({
