@@ -1,3 +1,5 @@
 import { body } from 'express-validator'
 
-export const addRoleValidator = () => [body('role').isString().withMessage('Enter role in plain text')]
+export const addRoleValidator = () => [
+  body('name').isString().withMessage('Enter name in plain text'),
+]

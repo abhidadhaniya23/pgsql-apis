@@ -22,6 +22,8 @@ app.get('/', async (req, res) => {
 // Routes
 app.use('/api', appRouter)
 
+// TODO: Implement Error handling middleware
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })

@@ -20,7 +20,8 @@ export const userRegister = async (req, res) => {
     // Check for existing email
     const isUserExist = await getUserByEmail(email)
     console.log(isUserExist)
-    if (isUserExist.rows.length > 0) return res.status(404).json({ message: 'User already exist with this email!' })
+    if (isUserExist.rows.length > 0)
+      return res.status(404).json({ message: 'User already exist with this email!' })
 
     // Hashing the password
     const salt = await bcrypt.genSalt(10) // Default sault rounds set to 10

@@ -8,7 +8,7 @@ configDotenv()
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'ecommerce',
+  database: 'pm',
   password: process.env.DB_PASSWORD,
   port: 5432, // Default PostgreSQL port
 })
