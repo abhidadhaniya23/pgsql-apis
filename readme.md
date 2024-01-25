@@ -28,3 +28,24 @@ JWT_EXPIRES=
 - Microservice architecture
 - Validate body data from incoming request for Insert and Delete operations
 - Custom error handling middleware
+
+### Response format
+
+```json
+{
+  "status": "fail",
+  "code": 500,
+  "message": "Internal server error",
+  "data": []
+}
+```
+
+---
+
+## Roles and Permissions
+
+| Roles           | Project    |          |            |            | Task       |          |            |            |
+| --------------- | ---------- | -------- | ---------- | ---------- | ---------- | -------- | ---------- | ---------- |
+|                 | **Create** | **Read** | **Update** | **Delete** | **create** | **Read** | **Update** | **Delete** |
+| Project Manager | ✅         | ✅       | ✅         | ✅         | ✅         | ✅       | ✅         | ✅         |
+| Developer       | ❌         | ✅       | ❌         | ❌         | ❌         | ✅       | ✅         | ❌         |

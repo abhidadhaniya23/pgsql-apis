@@ -10,7 +10,5 @@ export const validate = (req, res, next) => {
     return extractedErrors.push({ [err.path]: err.msg })
   })
 
-  return res.status(422).json({
-    errors: extractedErrors,
-  })
+  return res.validationError({ data: extractedErrors })
 }
