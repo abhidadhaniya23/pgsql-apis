@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
 
-import { getUserByEmail, getUserById, insertUser } from '../services/users.service.js'
+import { getAllUsers, getUserByEmail, getUserById, insertUser } from '../services/users.service.js'
 import { generateToken } from '../utils/jwtTokens.js'
 
 export const userRegister = async (req, res) => {
@@ -38,20 +38,28 @@ export const userLogin = async (req, res) => {
     // Compare credentials with existing user
     const { rows: existingUser } = await getUserByEmail(email)
 
-    if (existingUser.length === 0) return res.recordNotFound({ message: 'Wrong credentials!' })
+    if (existingUser.length === 0) return res.recordNotFound({ message: 'Incorrect Email!' })
 
     const isPasswordMatch = await bcrypt.compare(password, existingUser[0].password)
 
-    if (isPasswordMatch) {
-      // Generate JWT Token
+    if (!isPasswordMatch) return res.recordNotFound({ message: 'Wrong credentials!' })
 
-      const payload = { userId: existingUser[0].user_id }
-      const token = generateToken(payload)
+    // Generate JWT Token
+    const payload = { userId: existingUser[0].user_id }
+    const token = generateToken(payload)
 
-      const removePassword = ({ password, ...rest }) => rest
+    const removePassword = ({ password, ...rest }) => rest
 
-      return res.success({ data: { ...removePassword({ ...existingUser[0] }), token } })
-    }
+    return res.success({ data: { ...removePassword({ ...existingUser[0] }), token } })
+  } catch (error) {
+    return res.internalServerError({ message: error.message })
+  }
+}
+
+export const getUsers = async (req, res) => {
+  try {
+    const { rows: users } = await getAllUsers()
+    return res.success({ data: users })
   } catch (error) {
     return res.internalServerError({ message: error.message })
   }

@@ -12,9 +12,13 @@ import { addProjectValidator, updateProjectValidator } from '../validators/proje
 
 const projectRouter = express.Router()
 
-projectRouter.route('/').post(addProjectValidator(), validate, createProject).get(getProject)
+projectRouter
+  .route('/')
+  .post(auth, accessTo(1), addProjectValidator(), validate, createProject)
+  .get(getProject)
 
 projectRouter
+  .use(auth, accessTo(1))
   .route('/:projectId')
   .put(updateProjectValidator, validate, updateProject)
   .delete(deleteProject)

@@ -19,7 +19,8 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
