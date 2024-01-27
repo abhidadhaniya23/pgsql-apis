@@ -21,6 +21,6 @@ projectRouter
   .use(auth, accessTo(1))
   .route('/:projectId')
   .put(updateProjectValidator, validate, updateProject)
-  .delete(deleteProject)
+  .delete(auth, accessTo(1), deleteProject)
 
 export default projectRouter

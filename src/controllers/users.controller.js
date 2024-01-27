@@ -1,7 +1,12 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
 
-import { getAllUsers, getUserByEmail, getUserById, insertUser } from '../services/users.service.js'
+import {
+  deleteUserById,
+  getAllUsers,
+  getUserByEmail,
+  insertUser,
+} from '../services/users.service.js'
 import { generateToken } from '../utils/jwtTokens.js'
 
 export const userRegister = async (req, res) => {
@@ -21,12 +26,11 @@ export const userRegister = async (req, res) => {
 
     // Insert data into database and return
     const userData = { username, email, user_id, hashedPassword } // Set default role to 2.developer at db level
-    await insertUser(userData)
 
-    const { rows: registeredUser } = await getUserById(user_id)
+    const { rows: registeredUser } = await insertUser(userData)
 
     // Return the registered user
-    return res.success({ data: registeredUser })
+    return res.success({ data: registeredUser[0] })
   } catch (error) {
     return res.internalServerError({ message: error.message })
   }
@@ -60,6 +64,16 @@ export const getUsers = async (req, res) => {
   try {
     const { rows: users } = await getAllUsers()
     return res.success({ data: users })
+  } catch (error) {
+    return res.internalServerError({ message: error.message })
+  }
+}
+
+export const deleteUser = async (req, res) => {
+  const { user_id } = req.user
+  try {
+    await deleteUserById(user_id)
+    res.success({ message: 'User deleted successfully' })
   } catch (error) {
     return res.internalServerError({ message: error.message })
   }

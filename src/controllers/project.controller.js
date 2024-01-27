@@ -1,4 +1,9 @@
-import { addProject, getProjectByPm } from '../services/project.service.js'
+import {
+  addProject,
+  deleteProjectById,
+  getProjectById,
+  getProjectByPm,
+} from '../services/project.service.js'
 
 export const createProject = async (req, res) => {
   const { name, description, start_date, end_date } = req.body
@@ -9,9 +14,8 @@ export const createProject = async (req, res) => {
   const data = { name, description, start_date, end_date, manager_id }
 
   try {
-    await addProject(data)
-
-    return res.success({ message: 'Project successfully added' })
+    const addedProject = await addProject(data)
+    return res.success({ message: 'Project successfully added', data: addedProject.rows[0] })
   } catch (error) {
     return res.internalServerError({ message: error.message })
   }
@@ -39,5 +43,17 @@ export const getProject = async (req, res) => {
 export const updateProject = async (req, res) => {}
 
 export const deleteProject = async (req, res) => {
-  // Only admin can delete
+  const { projectId } = req.params
+  const { user_id } = req.user
+  try {
+    const { rows: selectedProject } = await getProjectById(projectId)
+    if (selectedProject[0].manager_id !== user_id)
+      return res.unAuthorized({
+        message: `UnAuthorized to delete other's project which you've not create`,
+      })
+    await deleteProjectById(projectId)
+    return res.success({ message: 'Project deleted successfully' })
+  } catch (error) {
+    return res.internalServerError({ message: error.message })
+  }
 }

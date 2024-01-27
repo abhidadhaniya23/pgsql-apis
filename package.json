@@ -5,9 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "admin": "node admin.js",
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "mocha src/test/pm.test.js src/test/user.test.js --exit"
   },
   "keywords": [],
   "author": "",
@@ -24,8 +26,11 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "chai": "^5.0.3",
+    "mocha": "^10.2.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.3",
-    "prettier": "^3.2.4"
+    "prettier": "^3.2.4",
+    "supertest": "^6.3.4"
   }
 }
