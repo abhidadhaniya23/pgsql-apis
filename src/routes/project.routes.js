@@ -15,12 +15,12 @@ const projectRouter = express.Router()
 projectRouter
   .route('/')
   .post(auth, accessTo(1), addProjectValidator(), validate, createProject)
-  .get(getProject)
+  .get(auth, accessTo(1), getProject)
 
 projectRouter
   .use(auth, accessTo(1))
   .route('/:projectId')
-  .put(updateProjectValidator, validate, updateProject)
+  .put(auth, accessTo(1), updateProjectValidator(), validate, updateProject)
   .delete(auth, accessTo(1), deleteProject)
 
 export default projectRouter

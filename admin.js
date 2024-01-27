@@ -30,8 +30,8 @@ adminApp.put('/api/user/:userId', updateUserValidator(), validate, async (req, r
   const { userId } = req.params
   const { role_id } = req.body
   try {
-    await updateUserRole(userId, role_id)
-    res.success({ message: 'Role updated successfully' })
+    const { rows: updatedUser } = await updateUserRole(userId, role_id)
+    res.success({ message: 'Role updated successfully', data: updatedUser[0] })
   } catch (error) {
     res.internalServerError({ message: error.message })
   }

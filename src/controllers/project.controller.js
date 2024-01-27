@@ -3,6 +3,7 @@ import {
   deleteProjectById,
   getProjectById,
   getProjectByPm,
+  updateProjectById,
 } from '../services/project.service.js'
 
 export const createProject = async (req, res) => {
@@ -40,7 +41,34 @@ export const getProject = async (req, res) => {
   }
 }
 
-export const updateProject = async (req, res) => {}
+export const updateProject = async (req, res) => {
+  const { projectId } = req.params
+  const updateData = req.body
+  const { user_id } = req.user
+
+  try {
+    // Verify the user who is updating the project is whether manager or not
+    const { rows: project } = await getProjectById(projectId)
+
+    if (project[0].manager_id !== user_id)
+      return res.unAuthorized({
+        message: 'Not authorized to update this project',
+      })
+
+    // Call the update project service to perform the database update
+    const updatedProject = await updateProjectById(projectId, updateData)
+
+    // Respond with the updated project details
+    return res.success({ data: updatedProject, message: 'Project updated successfully' })
+  } catch (error) {
+    // Handle errors and respond accordingly
+    if (error.message.includes('No project found')) {
+      return res.recordNotFound({ message: error.message })
+    } else {
+      return res.internalServerError({ message: error.message })
+    }
+  }
+}
 
 export const deleteProject = async (req, res) => {
   const { projectId } = req.params
